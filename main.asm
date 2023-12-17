@@ -21,6 +21,7 @@ Rectangle STRUCT
     y dword ?
     w dword ?
     h dword ?
+    active byte ? 
 Rectangle ENDS
 Color STRUCT
     r BYTE ?
@@ -28,10 +29,11 @@ Color STRUCT
     b BYTE ?
     a BYTE ?
 Color ENDS
-snake Rectangle <100, 100, 25, 25> 
-apple Rectangle <50, 50, 25, 25> 
+snake Rectangle <100, 100, 25, 25,0> 
+apple Rectangle <50, 50, 25, 25,1> 
 red Color <230,41,55,255>
-green Color <0, 228, 48, 255> 
+green Color <0, 228, 48, 255>
+snakeArray Rectangle 100 dup({100,100,25,25,0})
 
 .code
 externdef _CRT_INIT:proc, exit:proc
@@ -44,6 +46,7 @@ externdef red: Color
 externdef green: Color
 externdef direction: byte
 externdef printdir: proc
+externdef snakeArray:Rectangle
 
 
 main proc
@@ -52,6 +55,9 @@ main proc
     push rbx
     push rdi
     mov rbp, rsp
+
+    mov byte ptr [snakeArray].active,1
+
 
     mov rcx,60
     call SetTargetFPS

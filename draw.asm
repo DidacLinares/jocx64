@@ -17,6 +17,7 @@ externdef apple:Rectangle
 externdef red: Color
 externdef green: Color
 externdef direction: byte
+externdef snakeArray:Rectangle
 
 
 .code
@@ -29,10 +30,10 @@ push rbp
 mov rbp,rsp
 
 sub rsp,48
-mov ecx,snake.x
-mov edx,snake.y
-mov r8d,snake.w
-mov r9d,snake.h
+mov ecx,[snakeArray].x
+mov edx,[snakeArray].y
+mov r8d,[snakeArray].w
+mov r9d,[snakeArray].h
 mov eax,green
 mov dword ptr [rsp+32], eax
 call DrawRectangle

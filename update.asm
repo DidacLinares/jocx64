@@ -16,6 +16,7 @@ externdef apple:Rectangle
 externdef red: Color
 externdef green: Color
 externdef direction: byte
+externdef snakeArray:Rectangle
 
 .code
 externdef InitWindow:proc, SetTargetFPS:proc, BeginDrawing:proc, ClearBackground:proc, EndDrawing:proc, CloseWindow:proc, WindowShouldClose:proc
@@ -100,19 +101,19 @@ update proc
     je moure_abaix
 
 moure_adalt:
-    sub snake.y,25
+    sub [snakeArray].y,25
     jmp end_update
 
 moure_esquerra:
-    sub snake.x,25
+    sub [snakeArray].x,25
     jmp end_update
 
 moure_dreta:
-    add snake.x,25
+    add [snakeArray].x,25
     jmp end_update
 
 moure_abaix:
-    add snake.y,25
+    add [snakeArray].y,25
    
 end_update:
     mov direction,al
