@@ -11,6 +11,8 @@ Color STRUCT
     b BYTE ?
     a BYTE ?
 Color ENDS
+externdef screenWidth:qword
+externdef screenHeigth:qword
 externdef snake:Rectangle
 externdef apple:Rectangle
 externdef red: Color
@@ -83,8 +85,7 @@ update proc
     push rbp
     push rdi
     mov rbp,rsp
-    movzx rdi, direction
-    mov rcx,rdi
+    movzx rcx,direction
     call input
 
     cmp rbx,20
@@ -101,18 +102,30 @@ update proc
     je moure_abaix
 
 moure_adalt:
+    cmp [snakeArray].y,0
+    je end_update
     sub [snakeArray].y,25
     jmp end_update
 
 moure_esquerra:
+    cmp [snakeArray].x,0
+    je end_update
     sub [snakeArray].x,25
     jmp end_update
 
 moure_dreta:
+    mov rdi, [screenWidth]
+    sub rdi,25
+    cmp edi,[snakeArray].x
+    je end_update
     add [snakeArray].x,25
     jmp end_update
 
 moure_abaix:
+    mov rdi, [screenHeigth]
+    sub rdi,25
+    cmp edi,[snakeArray].y
+    je end_update
     add [snakeArray].y,25
    
 end_update:

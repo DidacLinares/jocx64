@@ -33,7 +33,7 @@ snake Rectangle <100, 100, 25, 25,0>
 apple Rectangle <50, 50, 25, 25,1> 
 red Color <230,41,55,255>
 green Color <0, 228, 48, 255>
-snakeArray Rectangle 100 dup({100,100,25,25,0})
+snakeArray Rectangle 576 dup({100,100,25,25,0})
 
 .code
 externdef _CRT_INIT:proc, exit:proc
@@ -46,7 +46,9 @@ externdef red: Color
 externdef green: Color
 externdef direction: byte
 externdef printdir: proc
-externdef snakeArray:Rectangle
+externdef snakeArray: Rectangle
+externdef screenWidth: qword
+externdef screenHeigth: qword
 
 
 main proc
