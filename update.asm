@@ -1,3 +1,6 @@
+includelib legacy_stdio_definitions.lib
+
+
 .data
 Rectangle STRUCT
     x dword ?
@@ -11,6 +14,7 @@ Color STRUCT
     b BYTE ?
     a BYTE ?
 Color ENDS
+CollisionText byte 'Collisio Detectada!!',10,0
 externdef screenWidth:qword
 externdef screenHeigth:qword
 externdef snake:Rectangle
@@ -19,10 +23,31 @@ externdef red: Color
 externdef green: Color
 externdef direction: byte
 externdef snakeArray:Rectangle
+externdef apple:Rectangle
 
 .code
 externdef InitWindow:proc, SetTargetFPS:proc, BeginDrawing:proc, ClearBackground:proc, EndDrawing:proc, CloseWindow:proc, WindowShouldClose:proc
 externdef IsKeyDown:proc, DrawRectangle:proc, printf:proc
+
+appleCollision proc
+    mov eax,apple.x
+    mov ecx,apple.y
+    mov r8d,[snakeArray].x
+    mov r9d,[snakeArray].y
+
+    cmp eax,r8d
+    jne end_appleCollision
+
+    cmp ecx,r9d
+    jne end_appleCollision
+
+    mov rax,1
+    ret
+
+end_appleCollision:
+    mov rax,0
+    ret
+appleCollision endp
 
 input proc
     push rbp
@@ -85,9 +110,18 @@ update proc
     push rbp
     push rdi
     mov rbp,rsp
-    movzx rcx,direction
-    call input
+    call appleCollision
+    test al,al
+    jz notDetectedCollision
+collisionDeteced:
+    sub rsp,40
+    lea rcx,CollisionText
+    call printf
+    add rsp,40
 
+notDetectedCollision:
+    movzx rcx,direction ; move with zero extend
+    call input 
     cmp rbx,20
     jne end_update
     mov rbx,0
